@@ -36,7 +36,7 @@ def getImageAndLabels(path):
 
 if __name__=="__main__":
     #图片路径
-    path='D:/4/pic'
+    path='D:/Python_cv/based-face-recognition/pic'
     #获取图片数组和ID标签数组和姓名
     faces,ids=getImageAndLabels(path)
     #加载识别器
@@ -44,4 +44,4 @@ if __name__=="__main__":
     #训练
     recognizer.train(faces,np.array(ids))
     #保存文件
-    recognizer.write('D:/4/trainer/trainer.yml')
+    recognizer.write('D:/Python_cv/based-face-recognition/trainer/jiahua.yml')

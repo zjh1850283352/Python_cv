@@ -9,7 +9,7 @@ import hashlib
 #加载训练数据集文件
 recogizer=cv2.face.LBPHFaceRecognizer_create()
 #加载数据
-recogizer.read('D:/4/trainer/trainer.yml')
+recogizer.read('D:/Python_cv/based-face-recognition/trainer/jiahua.yml')
 #名称
 names=[]
 #警报全局变量
@@ -59,11 +59,11 @@ def face_detect_demo(img):
     face=face_detector.detectMultiScale(gray)
     for x,y,w,h in face:
         cv2.rectangle(img,(x,y),(x+w,y+h),color=(0,0,255),thickness=2)
-        cv2.circle(img,center=(x+w//2,y+h//2),radius=w//2,color=(0,255,0),thickness=1)
+        #cv2.circle(img,center=(x+w//2,y+h//2),radius=w//2,color=(0,255,0),thickness=1)
         # 人脸识别
         ids, confidence = recogizer.predict(gray[y:y + h, x:x + w])
         #print('标签id:',ids,'置信评分：', confidence)
-        if confidence > 80:
+        '''if confidence > 80:
             global warningtime
             warningtime += 1
             if warningtime > 100:
@@ -71,12 +71,12 @@ def face_detect_demo(img):
                warningtime = 0
             cv2.putText(img, 'unkonw', (x + 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 1)
         else:
-            cv2.putText(img,str(names[ids-1]), (x + 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 1)
+            cv2.putText(img,str(names[ids-1]), (x + 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 1)'''
     cv2.imshow('result',img)
     #print('bug:',ids)
 
 def name():
-    path = 'D:/4/pic'
+    path = 'D:/Python_cv/based-face-recognition/pic'
     #names = []
     imagePaths=[os.path.join(path,f) for f in os.listdir(path)]
     for imagePath in imagePaths:
@@ -84,15 +84,28 @@ def name():
        names.append(name)
 
 
-cap=cv2.VideoCapture('1.mp4')
+cap=cv2.VideoCapture(0)
 name()
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+    face_detect_demo(frame)
+    if cv2.waitKey(1) == ord('q'):
+        break
+
+'''name()
 while True:
     flag,frame=cap.read()
     if not flag:
         break
     face_detect_demo(frame)
     if ord(' ') == cv2.waitKey(10):
-        break
+        break'''
 cv2.destroyAllWindows()
 cap.release()
 #print(names)
